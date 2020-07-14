@@ -161,11 +161,12 @@ export default class UpdateCourse extends Component {
                 error.handleError(this)
             }
         })
-
-
-
     }
 
+    /**
+     * 
+     * @param {input field} event updates corresponding component state based on user input
+     */
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -175,12 +176,29 @@ export default class UpdateCourse extends Component {
         })
     }
 
+    //triggers password authentication lightbox if user action requires authentication
     requireAuth = () => {
+        //make sure required fields are not empty
+        const { title, description } = this.state
+        const requiredFields = []
+        if (!description.length) {
+            requiredFields.push('Course "Description" cannot be empty')
+        }
+        if (!title.length) {
+            requiredFields.push('Course "Title" cannot be empty')
+        } 
+        if (requiredFields.length) {
+            this.setState({errors: requiredFields})
+            return
+        }
+
+        //authenticate user
         this.setState({
             authRequired: true
         })
     }
 
+    //removes password authentication lightbox
     cancelAuth = () => {
         this.setState({
             authRequired: false,
@@ -188,6 +206,7 @@ export default class UpdateCourse extends Component {
         })
     }
 
+    //updates current course
     submit = () => {
         const { context } = this.props;
         const {
@@ -209,16 +228,27 @@ export default class UpdateCourse extends Component {
 
         const newCourse = {
             userId: currentUser.id,
+            title,
+            description,
             estimatedTime,
             materialsNeeded
         }
 
-        if (description.length) {
-            newCourse.description = description
-        }
-        if (title.length) {
-            newCourse.title = title
-        }        
+        // const requiredFields = []
+        // if (description.length) {
+        //     newCourse.description = description
+        // } else {
+        //     requiredFields.push('Course "Description" cannot be empty')
+        // }
+        // if (title.length) {
+        //     newCourse.title = title
+        // } else {
+        //     requiredFields.push('Course "Title" cannot be empty')
+        // } 
+        
+        // if (requiredFields.length) {
+        //     this.setState({errors: requiredFields})
+        // }
 
         context.data.updateCourse(courseId, newCourse, user)
             .then( res => {
@@ -231,8 +261,10 @@ export default class UpdateCourse extends Component {
             })
     }
 
+    //stops updating course and returns user to course details page
     cancel = () => {
-        this.props.history.push('/');
+        const courseId = this.props.match.params.id
+        this.props.history.push(`/courses/${courseId}`);
     }
 }
 

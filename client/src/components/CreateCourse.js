@@ -132,21 +132,29 @@ export default class CreateCourse extends Component {
         );
     }
 
+    /**
+     * 
+     * @param {input field} event updates corresponding component state based on user input
+     */
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
 
-        this.setState({
+        this.setState(() => {
+            return {
                 [name]: value
+            };
         })
     }
 
+    //triggers password authentication lightbox if user action requires authentication
     requireAuth = () => {
         this.setState({
             authRequired: true
         })
     }
-
+    
+    //removes password authentication lightbox
     cancelAuth = () => {
         this.setState({
             authRequired: false,
@@ -154,6 +162,7 @@ export default class CreateCourse extends Component {
         })
     }
 
+    //post new course to api
     submit = async() => {
         const { context } = this.props;
         const {
@@ -197,6 +206,7 @@ export default class CreateCourse extends Component {
             })
     }
 
+    //stops creating course and redirects to homepage
     cancel = () => {
         this.props.history.push('/');
     }

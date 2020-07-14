@@ -83,6 +83,10 @@ export default class UserSignUp extends Component {
         );
     }
 
+    /**
+     * 
+     * @param {input field} event updates corresponding component state based on user input
+     */
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -94,6 +98,7 @@ export default class UserSignUp extends Component {
         })
     }
 
+    //makes a POST user request to api, if request is succesful, user is redirected to courses page
     submit = async() => {
         const { context } = this.props;
         const {
@@ -142,6 +147,7 @@ export default class UserSignUp extends Component {
 
     }
 
+    //makes a GET user request to api. If user is authenticated, user is redirected to previous visited page or homepage
     signInUser = async(emailAddress, password) =>{
         const { context } = this.props;
         await context.data.getUser(emailAddress, password).then(res => {
@@ -156,6 +162,7 @@ export default class UserSignUp extends Component {
         })
     }
 
+    //returns to courses page
     cancel = () => {
         this.props.history.push('/');
     }

@@ -19,15 +19,16 @@ import NotFound from './components/NotFound';
 import Forbidden from './components/Forbidden';
 import error from './components/UnhandledError'
 
+import PrivateRoute from './PrivateRoute'; //authemnticates user before giving access to page
 
-import withContext from './Context';
-import PrivateRoute from './PrivateRoute';
+import withContext from './Context';// gives components acces to Context Provider
 
 const HeaderWithContext = withContext(Header);
 const CoursesWithContext = withContext(Courses);
 const CourseDetailWithContext = withContext(CourseDetail)
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignOutWithContext = withContext(UserSignOut)
 const UpdateCourseWithContext = withContext(UpdateCourse);
 const CreateCourseWithContext = withContext(CreateCourse);
 
@@ -43,10 +44,10 @@ export default () => (
         <Route path="/courses/:id" component={CourseDetailWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
-        <Route path="/signout" component={UserSignOut} />
+        <Route path="/signout" component={UserSignOutWithContext} />
         <Route path="/forbidden" component={Forbidden} />
         <Route path="/error" component={error} />
-        <Route component={NotFound} />
+        <Route path="/notfound" component={NotFound} />
 
       </Switch>
 

@@ -152,9 +152,9 @@ export default class Data {
             } else if (err === 403) {
                 component.props.history.push("/forbidden")
             } else if (err === 404) {
-                component.props.history.push("/notFound")
+                component.props.history.push("/notfound")
             }else if (err === 500) {
-                component.props.history.push("/notFound")
+                component.props.history.push("/error")
             }
         })
     }

@@ -33,6 +33,7 @@ export default (props) => {
     );
 }
 
+//display form validation error if there are any errors in component error state array
 function ErrorsDisplay({ errors }) {
     let errorsDisplay = null;
 

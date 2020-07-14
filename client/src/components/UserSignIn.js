@@ -52,7 +52,10 @@ export default class UserSignIn extends Component {
         );
     }
 
-    //updates state based on field input
+    /**
+     * 
+     * @param {input field} event updates corresponding component state based on user input
+     */    
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -64,6 +67,7 @@ export default class UserSignIn extends Component {
         })
     }
 
+    //makes a GET user request to api. If user is authenticated, user is redirected to previous visited page or homepage
     submit = async() => {
         const { context } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/' } };
@@ -82,7 +86,7 @@ export default class UserSignIn extends Component {
 
     }
 
-
+    //redirects user to courses page
     cancel = () => {
         this.props.history.push('/');
     }
