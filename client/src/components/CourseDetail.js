@@ -143,6 +143,10 @@ export default class CourseDetail extends Component {
         }
     }   
 
+    /**
+     * 
+     * @param {input field} event updates corresponding component state based on user input
+     */
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -154,12 +158,14 @@ export default class CourseDetail extends Component {
         })
     }
 
+    //triggers password authentication lightbox if user action requires authentication
     requireAuth = () => {
         this.setState({
             authRequired: true
         })
     }
 
+    //removes password authentication lightbox
     cancel = () => {
         this.setState({
             authRequired: false,
@@ -167,6 +173,7 @@ export default class CourseDetail extends Component {
         })
     }
 
+    //deletes current course
     submit = () => {
         const { context } = this.props;
         const {emailAddress} = this.state.currentUser;

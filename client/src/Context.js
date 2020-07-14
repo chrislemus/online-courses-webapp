@@ -48,7 +48,8 @@ export class Provider extends Component {
         Cookies.set('authenticatedUser', JSON.stringify({
             id: user.Id, 
             name: user.Name, 
-            emailAddress: user.Email
+            emailAddress: user.Email,
+            password: user.Password
         }), cookieOptions);
     }
 

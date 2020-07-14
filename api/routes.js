@@ -29,10 +29,12 @@ function asyncHandler(cb) {
 router.get('/users', dataMW.authenticateUser, asyncHandler(async(req, res) => {
     const user = req.currentUser
 
+    console.log(user)
     res.json({
         Id: user.id,
         Name: `${user.firstName} ${user.lastName}`,
         Email: user.emailAddress,
+        Password: user.password
     });
 }));
 

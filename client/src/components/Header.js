@@ -12,7 +12,7 @@ export default ({context}) => {
                     {authUser ? (
                         <React.Fragment>
                             <span>Welcome, {authUser.name}!</span>
-                            <Link to="/signout" onClick={() => context.actions.signOut()}>Sign Out</Link>
+                            <Link to="/signout" >Sign Out</Link>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>

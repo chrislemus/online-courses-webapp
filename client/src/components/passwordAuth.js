@@ -11,12 +11,13 @@ export default (props) => {
         elements,
     } = props;
 
-    
+    //prevents form submission and triggers parent component submit function
     function handleSubmit(event) {
         event.preventDefault();
         submit();
     }
 
+    //removes password authentication lightbox
     function handleCancel(event) {
         event.preventDefault();
         cancel();
