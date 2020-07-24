@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PasswordAuth from './passwordAuth';
 import Form from './Form';
 import Cookies from 'js-cookie';
 
@@ -7,9 +6,6 @@ import Cookies from 'js-cookie';
 export default class UpdateCourse extends Component {
 
     state = {
-        authRequired: false, //display "invalid password" message in lightbox
-        invalidPass: false, //check whether password is valid
-        password: "",
         currentUser: Cookies.getJSON('authenticatedUser') || null,
         errors: [],
         title: "",
@@ -20,9 +16,6 @@ export default class UpdateCourse extends Component {
 
     render() {
         const {
-            authRequired,
-            invalidPass,
-            password,
             currentUser,
             title,
             description,
@@ -34,33 +27,11 @@ export default class UpdateCourse extends Component {
         } = this.state;
 
         return (
-            <div> {authRequired ? (
-                <>
-                            
-                            <PasswordAuth
-                                cancel={this.cancelAuth}
-                                invalidPass={invalidPass}
-                                submit={this.submit}
-                                submitButtonText="Update course"
-                                elements={() => (
-                                    <React.Fragment>
-                                        <input 
-                                            id="password" 
-                                            name="password" 
-                                            type="password" 
-                                            value={password}
-                                            onChange={this.change}  
-                                            placeholder="Password"/>
-                                    </React.Fragment>
-                                )}
-                            />
-                </>) : (
-                    null
-                )}
+            <div> 
                 <Form
                     cancel={this.cancel}
                     errors={errors}
-                    submit={this.requireAuth}
+                    submit={this.submit}
                     submitButtonText="Update course"
                     elements={() => (
                         <React.Fragment>
@@ -176,42 +147,11 @@ export default class UpdateCourse extends Component {
         })
     }
 
-    //triggers password authentication lightbox if user action requires authentication
-    requireAuth = () => {
-        //make sure required fields are not empty
-        const { title, description } = this.state
-        const requiredFields = []
-        if (!description.length) {
-            requiredFields.push('Course "Description" cannot be empty')
-        }
-        if (!title.length) {
-            requiredFields.push('Course "Title" cannot be empty')
-        } 
-        if (requiredFields.length) {
-            this.setState({errors: requiredFields})
-            return
-        }
-
-        //authenticate user
-        this.setState({
-            authRequired: true
-        })
-    }
-
-    //removes password authentication lightbox
-    cancelAuth = () => {
-        this.setState({
-            authRequired: false,
-            password: ""
-        })
-    }
-
     //updates current course
     submit = () => {
         const { context } = this.props;
         const {
             currentUser,
-            password,
             title,
             description,
             estimatedTime,
@@ -223,7 +163,7 @@ export default class UpdateCourse extends Component {
 
         const user = {
             emailAddress: currentUser.emailAddress,
-            password
+            password: currentUser.password
         }
 
         const newCourse = {
@@ -234,21 +174,22 @@ export default class UpdateCourse extends Component {
             materialsNeeded
         }
 
-        // const requiredFields = []
-        // if (description.length) {
-        //     newCourse.description = description
-        // } else {
-        //     requiredFields.push('Course "Description" cannot be empty')
-        // }
-        // if (title.length) {
-        //     newCourse.title = title
-        // } else {
-        //     requiredFields.push('Course "Title" cannot be empty')
-        // } 
+        const requiredFields = []
+        if (description.length) {
+            newCourse.description = description
+        } else {
+            requiredFields.push('Course "Description" cannot be empty')
+        }
+        if (title.length) {
+            newCourse.title = title
+        } else {
+            requiredFields.push('Course "Title" cannot be empty')
+        } 
         
-        // if (requiredFields.length) {
-        //     this.setState({errors: requiredFields})
-        // }
+        if (requiredFields.length) {
+            this.setState({errors: requiredFields})
+            return
+        }
 
         context.data.updateCourse(courseId, newCourse, user)
             .then( res => {

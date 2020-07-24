@@ -2,7 +2,8 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom';
 
 
@@ -48,6 +49,7 @@ export default () => (
         <Route path="/forbidden" component={Forbidden} />
         <Route path="/error" component={error} />
         <Route path="/notfound" component={NotFound} />
+        <Redirect from='*' to='/notfound' />
 
       </Switch>
 

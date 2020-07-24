@@ -43,10 +43,11 @@ const authenticateUser = async(req, res, next) => {
                 // (from the Authorization header) to the user's password
                 // that was retrieved from the data store.
                 const authenticated = bcryptjs
-                    .compareSync(credentials.pass, user.password)
+                    .compareSync(credentials.pass, user.password) //compares normal password to hash
+                const hashCompare = user.password === credentials.pass //compares two hash password values
                 
                 // If the passwords match...
-                if (authenticated) {
+                if (authenticated || hashCompare) {
                     console.log("autheticated")
                     // Then store the retrieved user object on the request object
                     // so any middleware functions that follow this middleware function

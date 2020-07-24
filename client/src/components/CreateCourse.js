@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import PasswordAuth from './passwordAuth';
 import Form from './Form';
 import Cookies from 'js-cookie';
 
 export default class CreateCourse extends Component {
 
     state = {
-        authRequired: false, //display password authentication
-        invalidPass: false, //display "invalid password" message in lightbox
-        password: "",
         currentUser: Cookies.getJSON('authenticatedUser') || null,
         errors: [],
         title: "",
@@ -20,9 +16,6 @@ export default class CreateCourse extends Component {
 
     render() {
         const {
-            authRequired,
-            invalidPass,
-            password,
             currentUser,
             title,
             description,
@@ -35,34 +28,11 @@ export default class CreateCourse extends Component {
 
         return (
             <div> 
-                {authRequired ? (
-                    <>
-                        <PasswordAuth
-                            cancel={this.cancelAuth}
-                            invalidPass={invalidPass}
-                            submit={this.submit}
-                            submitButtonText="Delete"
-                            elements={() => (
-                                <React.Fragment>
-                                    <input 
-                                        id="password" 
-                                        name="password" 
-                                        type="password" 
-                                        value={password}
-                                        onChange={this.change}  
-                                        placeholder="Password"/>
-                                </React.Fragment>
-                            )}
-                        />
-
-                    </>) : (
-                        null
-                )}
                 <div className="courseForm">
                     <Form
                         cancel={this.cancel}
                         errors={errors}
-                        submit={this.requireAuth}
+                        submit={this.submit}
                         submitButtonText="Create Course"
                         elements={() => (
                             <React.Fragment>
@@ -147,27 +117,11 @@ export default class CreateCourse extends Component {
         })
     }
 
-    //triggers password authentication lightbox if user action requires authentication
-    requireAuth = () => {
-        this.setState({
-            authRequired: true
-        })
-    }
-    
-    //removes password authentication lightbox
-    cancelAuth = () => {
-        this.setState({
-            authRequired: false,
-            password: ""
-        })
-    }
-
     //post new course to api
     submit = async() => {
         const { context } = this.props;
         const {
             currentUser,
-            password,
             title,
             description,
             estimatedTime,
@@ -177,7 +131,7 @@ export default class CreateCourse extends Component {
 
         const user = {
             emailAddress: currentUser.emailAddress,
-            password
+            password: context.authenticatedUser.password
         }
 
         const newCourse = {
@@ -197,7 +151,6 @@ export default class CreateCourse extends Component {
         await context.data.CreateCourse(newCourse, user)
             .then(res => {
                 const { data, error } = res
-                console.log(data)
                 if (data) {
                     this.props.history.push("/")
                 } else if (error.type) {

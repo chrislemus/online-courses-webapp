@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PasswordAuth from './passwordAuth'
 import ReactMarkdown from 'react-markdown';
 import Cookies from 'js-cookie';
 
@@ -10,54 +9,24 @@ export default class CourseDetail extends Component {
     state = {
         course: '',
         creator: '',
-        password: "",
-        invalidPass: false,
-        authRequired: false,
         currentUser: Cookies.getJSON('authenticatedUser') || null
     }
 
     render() {
         const {
-            course,
-            password,
-            invalidPass,
-            authRequired
+            course
         } = this.state;
         const courseETA = course.estimatedTime
 
         return (
-            <>  
-                {authRequired ? (
-                    <>
-                        <PasswordAuth
-                            cancel={this.cancel}
-                            invalidPass={invalidPass}
-                            submit={this.submit}
-                            submitButtonText="Delete"
-                            elements={() => (
-                                <React.Fragment>
-                                    <input 
-                                        id="password" 
-                                        name="password" 
-                                        type="password" 
-                                        value={password}
-                                        onChange={this.change}  
-                                        placeholder="Password"/>
-                                </React.Fragment>
-                            )}
-                        />
-
-                    </>) : (
-                        null
-                )}
-                
+            <>                  
                 <div className="actions--bar">
                     <div className="bounds">
                         <div className="grid-100">
                             {this.userIsCourseOwner() ? (
                                 <span>
                                     <Link className="button" to={`/courses/${course.id}/update`}>Update Course</Link>
-                                    <button className="button" onClick={this.requireAuth}>Delete Course</button>
+                                    <button className="button" onClick={this.submit}>Delete Course</button>
                                 </span>
                             ) : (
                                 null
@@ -143,42 +112,12 @@ export default class CourseDetail extends Component {
         }
     }   
 
-    /**
-     * 
-     * @param {input field} event updates corresponding component state based on user input
-     */
-    change = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-
-        this.setState(() => {
-            return {
-                [name]: value
-            };
-        })
-    }
-
-    //triggers password authentication lightbox if user action requires authentication
-    requireAuth = () => {
-        this.setState({
-            authRequired: true
-        })
-    }
-
-    //removes password authentication lightbox
-    cancel = () => {
-        this.setState({
-            authRequired: false,
-            password: ""
-        })
-    }
-
     //deletes current course
     submit = () => {
         const { context } = this.props;
         const {emailAddress} = this.state.currentUser;
         const courseId = this.state.course.id;
-        const { password } = this.state;
+        const password = context.authenticatedUser.password;
 
         context.data.deleteCourse(emailAddress, password, courseId)
             .then(res => {
