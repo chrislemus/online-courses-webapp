@@ -28,9 +28,9 @@
 3. `npm start`  -  runs app in http://localhost:5000/.
 
 ## Operation
-Browse business listings in the sites main landing page. 
+All courses are available in the main landing page.
 
-View all reviews for a certain business by clicking `view all` text link under the business name. 
+Account will be required to create and manage all personal courses. Once a course is created and saved, the course will be pubicly available.
 
 ## Live Preview
 [Check out the live demo here!](https://www.chrislemus.io/project-demo/4)
