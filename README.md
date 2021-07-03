@@ -1,5 +1,5 @@
 # Courses WebApp
->Online courses WebApp that allows users to create and share online courses. The Frontend is built with React and the Backend uses ExpressJs.
+>Online courses WebApp. Allows users to create and share online courses. The Frontend is built with React, and the Backend uses ExpressJs.
 
 
 **Table of Contents**  
@@ -28,9 +28,9 @@
 3. `npm start`  -  runs app in http://localhost:5000/.
 
 ## Operation
-All courses are available in the main landing page.
+All courses are available on the main landing page.
 
-Account will be required to create and manage all personal courses. Once a course is created and saved, the course will be pubicly available.
+Account will be required to create and manage all personal courses. Once a course is created and saved, the course will be publicly available.
 
 ## Live Preview
 [Check out the live demo here!](https://www.chrislemus.io/project-demo/4)
